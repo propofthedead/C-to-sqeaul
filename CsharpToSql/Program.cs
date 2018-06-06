@@ -12,6 +12,26 @@ namespace CsharpToSql
 		static List<User> users = new List<User>();
 		static void Main(string[] args)
 		{
+			(new Program()).Insert();
+		}
+		void Insert() {
+			string connStr = @"server=DESKTOP-7KOO68T\SQLEXPRESS;database=prs;Trusted_connection=true";
+			SqlConnection conn = new SqlConnection(connStr);
+			conn.Open();
+			if (conn.State != System.Data.ConnectionState.Open) {
+				throw new ApplicationException("connection did not open");
+			}
+			string sql = "Insert into [user] (Username,Password,Firstname,Lastname,phone,email,IsReviewer,IsAdmin)"+
+				"values('usr' , 'pass' , 'first' , 'last' , 'phone','email', 1, 1)";
+			SqlCommand cmd = new SqlCommand(sql, conn);
+			int recsAffectec=cmd.ExecuteNonQuery();
+			if (recsAffectec != 1) {
+				System.Diagnostics.Debug.WriteLine("huston there is a problem");
+			}
+
+			conn.Close();
+		}
+		void Select() { 
 			string connStr = @"server=DESKTOP-7KOO68T\SQLEXPRESS;database=prs;Trusted_connection=true";
 			SqlConnection conn = new SqlConnection(connStr);
 			conn.Open();
