@@ -28,6 +28,41 @@ namespace CsharpToSql
 			Select();
 		}
 
+		void Update(User nUser)
+		{
+			string connStr = @"server=DESKTOP-7KOO68T\SQLEXPRESS;database=prs;Trusted_connection=true";
+			SqlConnection conn = new SqlConnection(connStr);
+			conn.Open();
+			if (conn.State != System.Data.ConnectionState.Open) {
+				throw new ApplicationException("connection did not open");
+			}
+			string sql = "Update [user] "+ 
+				+ " Set Username = @Username, "
+				+ " Password = @Password"
+				+ " Firstname= @Firstname"
+				+ "	Lastname=@Lastname"
+				+" phone=@phone"
+				+" email=@email"
+				+" IsReviewer=@IsReviewer"
+				+" IsAdmin=@IsAdmin"
+				+ "Where Id=@Id; ";
+			SqlCommand cmd = new SqlCommand(sql, conn);
+			cmd.Parameters.Add(new SqlParameter("@Username", nUser.Username));
+			cmd.Parameters.Add(new SqlParameter("@Password", nUser.Password));
+			cmd.Parameters.Add(new SqlParameter("@Firstname", nUser.Firstname));
+			cmd.Parameters.Add(new SqlParameter("@Lastname", nUser.Lastname));
+			cmd.Parameters.Add(new SqlParameter("@phone", nUser.Phone));
+			cmd.Parameters.Add(new SqlParameter("@email", nUser.Email));
+			cmd.Parameters.Add(new SqlParameter("@IsReviewer", nUser.IsReviewer));
+			cmd.Parameters.Add(new SqlParameter("@IsAdmin", nUser.IsAdmin));
+			cmd.Parameters.Add(new SqlParameter("@Id", nUser.Id));
+			int recsAffectec = cmd.ExecuteNonQuery();
+			if (recsAffectec != 1) {
+				System.Diagnostics.Debug.WriteLine("huston there is a problem");
+			}
+
+			conn.Close();
+		}
 		void Insert(User nUser) {
 			string connStr = @"server=DESKTOP-7KOO68T\SQLEXPRESS;database=prs;Trusted_connection=true";
 			SqlConnection conn = new SqlConnection(connStr);
