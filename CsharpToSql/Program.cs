@@ -16,15 +16,16 @@ namespace CsharpToSql
 		}
 		void Run() {
 			User user = new User();
-			user.Username = "XXX";
+			user.Id = 9;
+			user.Username = "Rasputin";
 			user.Password = "passing";
-			user.Firstname = "Denise";
-			user.Lastname = "Bartik";
-			user.Phone = "555-555-1212";
-			user.Email = "rara@ba";
+			user.Firstname = "Deni";
+			user.Lastname = "Bart";
+			user.Phone = "555-555-1122";
+			user.Email = "rar@ba";
 			user.IsReviewer = true;
 			user.IsAdmin = true;
-			Insert(user);
+			Update(user);
 			Select();
 		}
 
@@ -36,16 +37,16 @@ namespace CsharpToSql
 			if (conn.State != System.Data.ConnectionState.Open) {
 				throw new ApplicationException("connection did not open");
 			}
-			string sql = "Update [user] "+ 
+			string sql = "Update [user] "
 				+ " Set Username = @Username, "
-				+ " Password = @Password"
-				+ " Firstname= @Firstname"
-				+ "	Lastname=@Lastname"
-				+" phone=@phone"
-				+" email=@email"
-				+" IsReviewer=@IsReviewer"
-				+" IsAdmin=@IsAdmin"
-				+ "Where Id=@Id; ";
+				+ " Password = @Password, "
+				+ " Firstname= @Firstname, "
+				+ "	Lastname=@Lastname, "
+				+" phone=@phone, "
+				+" email=@email, "
+				+" IsReviewer=@IsReviewer, "
+				+" IsAdmin=@IsAdmin  "
+				+ " Where Id=@Id; ";
 			SqlCommand cmd = new SqlCommand(sql, conn);
 			cmd.Parameters.Add(new SqlParameter("@Username", nUser.Username));
 			cmd.Parameters.Add(new SqlParameter("@Password", nUser.Password));
