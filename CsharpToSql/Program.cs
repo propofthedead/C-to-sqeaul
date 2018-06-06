@@ -21,7 +21,9 @@ namespace CsharpToSql
 			SqlCommand cmd = new SqlCommand(sql, conn);
 			SqlDataReader reader = cmd.ExecuteReader();
 			while (reader.Read()) {
-				System.Diagnostics.Debug.WriteLine("Read another row");
+				int id = reader.GetInt32(reader.GetOrdinal("Id"));
+				string username = reader.GetString(reader.GetOrdinal("Username"));
+				System.Diagnostics.Debug.WriteLine($"{id},{username}");
 			}
 
 			conn.Close();
