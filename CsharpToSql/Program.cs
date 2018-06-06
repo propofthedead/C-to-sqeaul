@@ -12,19 +12,42 @@ namespace CsharpToSql
 		static List<User> users = new List<User>();
 		static void Main(string[] args)
 		{
-			(new Program()).Insert();
+			(new Program()).Run();
 		}
-		void Insert() {
+		void Run() {
+			User user = new User();
+			user.Username = "XXX";
+			user.Password = "passing";
+			user.Firstname = "Denise";
+			user.Lastname = "Bartik";
+			user.Phone = "555-555-1212";
+			user.Email = "rara@ba";
+			user.IsReviewer = true;
+			user.IsAdmin = true;
+			Insert(user);
+			Select();
+		}
+
+		void Insert(User nUser) {
 			string connStr = @"server=DESKTOP-7KOO68T\SQLEXPRESS;database=prs;Trusted_connection=true";
 			SqlConnection conn = new SqlConnection(connStr);
 			conn.Open();
 			if (conn.State != System.Data.ConnectionState.Open) {
 				throw new ApplicationException("connection did not open");
 			}
-			string sql = "Insert into [user] (Username,Password,Firstname,Lastname,phone,email,IsReviewer,IsAdmin)"+
-				"values('usr' , 'pass' , 'first' , 'last' , 'phone','email', 1, 1)";
+			string sql = "Insert into [user] (Username,Password,Firstname,Lastname,phone,email,IsReviewer,IsAdmin) "+
+				" values (@Username,@Password,@Firstname,@Lastname,@phone,@email,@IsReviewer,@IsAdmin)";
 			SqlCommand cmd = new SqlCommand(sql, conn);
-			int recsAffectec=cmd.ExecuteNonQuery();
+			cmd.Parameters.Add(new SqlParameter("@Username", nUser.Username));
+			cmd.Parameters.Add(new SqlParameter("@Password", nUser.Password));
+			cmd.Parameters.Add(new SqlParameter("@Firstname", nUser.Firstname));
+			cmd.Parameters.Add(new SqlParameter("@Lastname", nUser.Lastname));
+			cmd.Parameters.Add(new SqlParameter("@phone", nUser.Phone));
+			cmd.Parameters.Add(new SqlParameter("@email", nUser.Email));
+			cmd.Parameters.Add(new SqlParameter("@IsReviewer", nUser.IsReviewer));
+			cmd.Parameters.Add(new SqlParameter("@IsAdmin", nUser.IsAdmin));
+
+			int recsAffectec =cmd.ExecuteNonQuery();
 			if (recsAffectec != 1) {
 				System.Diagnostics.Debug.WriteLine("huston there is a problem");
 			}
