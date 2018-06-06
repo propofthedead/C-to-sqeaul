@@ -17,7 +17,14 @@ namespace CsharpToSql
 			if (conn.State != System.Data.ConnectionState.Open) {
 				throw new ApplicationException("connection did not open");
 			}
-			System.Diagnostics.Debug.WriteLine("Connection Opened");
+			string sql = "select * from [User]";
+			SqlCommand cmd = new SqlCommand(sql, conn);
+			SqlDataReader reader = cmd.ExecuteReader();
+			while (reader.Read()) {
+				System.Diagnostics.Debug.WriteLine("Read another row");
+			}
+
+			conn.Close();
 		}
 	}
 }
